@@ -22,6 +22,6 @@ jobs:
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/cs548-nginx-image:1.0
 
 secrets:
-  DOCKERHUB_USERNAME: thodorisp
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 

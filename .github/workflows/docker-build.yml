@@ -1,0 +1,27 @@
+name: Build and Push Docker Image
+
+on:
+  workflow_dispatch: # Manually trigger the workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/cs548-nginx-image:latest .
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/cs548-nginx-image:latest ${{ secrets.DOCKERHUB_USERNAME }}/cs548-nginx-image:1.0
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/cs548-nginx-image:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/cs548-nginx-image:1.0
+
+secrets:
+  DOCKERHUB_USERNAME: thodorisp
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
